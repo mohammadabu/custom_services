@@ -31,46 +31,47 @@ class Customservices(models.Model):
     day_off = fields.Char()
     is_repeted = fields.Boolean(default=False)
     users_esc_email = fields.Text()
-    def _get_default_note(self):
-        get_project_menu_id =  self.env.ref('project.menu_main_pm').id
-        get_project_action_id =  self.env.ref('project.open_view_project_all').id	
-        get_services_menu_id = self.env.ref('services.menu_main_pm').id
-        get_services_action_id = self.env.ref('services.open_view_services_all').id	
-        tbody = ""
-        services_ids = []
-        if self.parent_opportunity.id != False:
-            servicess = self.env['services.services'].sudo().search([('parent_opportunity','=',self.parent_opportunity.id)])
-            for services in servicess:
-                services_ids.append(services.id)
-                tbody += ('<tr><th scope="row"><a  href="/web?&debug=#action=%s&active_id=%s&cids=1&id=%s&menu_id=%s&model=services.services&view_type=form" >%s</a></th><td>%s</td><td>services</td></tr>') % (get_services_action_id,self.id,services.id,get_services_menu_id,services.name_seq,services.name)
-            projects = self.env['project.project'].sudo().search(['&','|',('default_access_emails','like','#'+str(self.env.uid)+'#'),'|',('stage_access_emails','like','#'+str(self.env.uid)+'#'),'|',('assigned_resources_access_emails','like','#'+str(self.env.uid)+'#'),('owner_ownerManager_emails','like','#'+str(self.env.uid)+'#'),('parent_opportunity','=',self.parent_opportunity.id),('id','!=',self.id)])
-            for project in projects:
-                tbody += ('<tr><th scope="row"><a  href="/web?&debug=#action=%s&active_id=%s&cids=1&id=%s&menu_id=%s&model=project.project&view_type=form" >%s</a></th><td>%s</td><td>Project</td></tr>') % (get_project_action_id,self.id,project.id,get_project_menu_id,project.name_seq,project.name)
-        else:
-             tbody = "" 
-        for linked_project in self.linked_project:
-            if linked_project.id not in services_ids:
-                tbody += ('<tr><th scope="row"><a  href="/web?&debug=#action=%s&active_id=%s&cids=1&id=%s&menu_id=%s&model=services.services&view_type=form" >%s</a></th><td>%s</td><td>services</td></tr>') % (get_services_action_id,self.id,linked_project.id,get_services_menu_id,linked_project.name_seq,linked_project.name)
-        if  tbody == "" or tbody == False:
-            tbody += '<tr><td colspan="3" style="text-align: center;">There is No Data to display</td></tr>'
-        result = """
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                    <th scope="col">Reference</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                 """
-        result +=  tbody       
-        result += """            
-                </tbody>
-            </table>
-        """
-        self.test_html = result
-    test_html = fields.Text(compute=_get_default_note)
+    # def _get_default_note(self):
+    #     get_project_menu_id =  self.env.ref('project.menu_main_pm').id
+    #     get_project_action_id =  self.env.ref('project.open_view_project_all').id	
+    #     get_services_menu_id = self.env.ref('services.menu_main_pm').id
+    #     get_services_action_id = self.env.ref('services.open_view_services_all').id	
+    #     tbody = ""
+    #     services_ids = []
+    #     if self.parent_opportunity.id != False:
+    #         servicess = self.env['services.services'].sudo().search([('parent_opportunity','=',self.parent_opportunity.id)])
+    #         for services in servicess:
+    #             services_ids.append(services.id)
+    #             tbody += ('<tr><th scope="row"><a  href="/web?&debug=#action=%s&active_id=%s&cids=1&id=%s&menu_id=%s&model=services.services&view_type=form" >%s</a></th><td>%s</td><td>services</td></tr>') % (get_services_action_id,self.id,services.id,get_services_menu_id,services.name_seq,services.name)
+    #         projects = self.env['project.project'].sudo().search(['&','|',('default_access_emails','like','#'+str(self.env.uid)+'#'),'|',('stage_access_emails','like','#'+str(self.env.uid)+'#'),'|',('assigned_resources_access_emails','like','#'+str(self.env.uid)+'#'),('owner_ownerManager_emails','like','#'+str(self.env.uid)+'#'),('parent_opportunity','=',self.parent_opportunity.id),('id','!=',self.id)])
+    #         for project in projects:
+    #             tbody += ('<tr><th scope="row"><a  href="/web?&debug=#action=%s&active_id=%s&cids=1&id=%s&menu_id=%s&model=project.project&view_type=form" >%s</a></th><td>%s</td><td>Project</td></tr>') % (get_project_action_id,self.id,project.id,get_project_menu_id,project.name_seq,project.name)
+    #     else:
+    #          tbody = "" 
+    #     for linked_project in self.linked_project:
+    #         if linked_project.id not in services_ids:
+    #             tbody += ('<tr><th scope="row"><a  href="/web?&debug=#action=%s&active_id=%s&cids=1&id=%s&menu_id=%s&model=services.services&view_type=form" >%s</a></th><td>%s</td><td>services</td></tr>') % (get_services_action_id,self.id,linked_project.id,get_services_menu_id,linked_project.name_seq,linked_project.name)
+    #     if  tbody == "" or tbody == False:
+    #         tbody += '<tr><td colspan="3" style="text-align: center;">There is No Data to display</td></tr>'
+    #     result = """
+    #         <table class="table table-hover table-bordered">
+    #             <thead>
+    #                 <tr>
+    #                 <th scope="col">Reference</th>
+    #                 <th scope="col">Name</th>
+    #                 <th scope="col">Type</th>
+    #                 </tr>
+    #             </thead>
+    #             <tbody>
+    #              """
+    #     result +=  tbody       
+    #     result += """            
+    #             </tbody>
+    #         </table>
+    #     """
+    #     self.test_html = result
+    # test_html = fields.Text(compute=_get_default_note)
+    test_html = fields.Text()
     @api.model
     def _getProjectManager(self):
         all_emails = []
