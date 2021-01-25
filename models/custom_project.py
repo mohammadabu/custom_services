@@ -327,7 +327,7 @@ class Customservices(models.Model):
     def create(self,vals):
         if vals.get('name_seq',_("New") == _("New")):
             seq = self.env['ir.sequence'].next_by_code('services.services.sequence')
-            name_seq = 'OSP-'+seq
+            name_seq = 'MSP-'+seq
             vals['name_seq'] = name_seq
         res = super(Customservices,self).create(vals)
         return res
