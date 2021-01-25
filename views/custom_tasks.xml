@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="custom_edit_task_view_services" model="ir.ui.view">
+            <field name="name">Custom Edit Task View services</field>
+            <field name="model">services.task</field>
+            <field name="inherit_id" ref="services.view_task_form2"/>
+            <field name="arch" type="xml">
+                <!-- <xpath expr="//field[@name='detail_plan_work']" position="after">
+                    <field name="work"/>
+                    <field name="work_complete"/>
+                </xpath> -->
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <!-- <field name="assigned_res" string="Assigned Resources" widget="many2many_tags"/> -->
+                    <!-- <field name="duration_1" />
+                    <field name="start_date" />
+                    <field name="end_date" /> -->
+                    <div name="percentage_complete">
+                        <label for="percentage_complete"/>
+                    </div>
+                    <div>
+                        <field name="percentage_complete"  class="oe_inline"/> (%%)
+                        <!-- attrs="{'invisible': [('task_resource_ids', 'in', uid)]}" -->
+                    </div>
+                    <!-- <field name="hide_progress"/> -->
+                    <!-- <field name="work"/>
+                    <field name="work_complete"/> -->
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="attrs">{'invisible': 1}</attribute> 
+                </xpath>
+            </field>
+        </record>    
+        <!-- <record id="custom_edit_task_gant_tab_view" model="ir.ui.view">
+            <field name="name">Custom Edit Task Gnat Tab View</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project_native.ganttaps_view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='detail_plan_work']" position="after">
+                    <field name="work"/>
+                    <field name="work_complete"/>
+                </xpath>
+            </field>
+        </record>          -->
+    </data>
+</odoo>    
+
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+

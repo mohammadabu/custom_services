@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="project_stages_reason_action" model="ir.actions.act_window">
+            <field name="name">Project Stages</field>
+            <field name="res_model">project.project.stages</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Define a new on Project Stages
+              </p>
+            </field>
+        </record>
+        <record id='custom_project_stages_reason_action' model='ir.ui.view'>
+            <field name='name'>custom project stages action</field>
+            <field name='model'>project.project.stages</field>
+            <field name='arch' type='xml'>
+                <form>
+                    <sheet>
+                        <group>
+                            <field name='name'/>
+                            <field invisible="1" name='default_stage'/>
+                            <field invisible="1" name='internal_id'/>
+                        </group>
+                    </sheet>
+                </form>            
+            </field>
+        </record>  
+        <menuitem
+                id="custom_menu_project_stages"
+                action="project_stages_reason_action"
+                parent="project.menu_project_config"
+                sequence="10"
+                name="Project Stages"
+        />
+        <record id="custom_project_kanban_view" model="ir.ui.view">
+            <field name="name">Custom Project Kanban</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project_kanban"/>
+            <field name="arch" type="xml">
+                <kanban position="attributes">
+                    <attribute name="class">o_kanban_small_column o_kanban_project_tasks</attribute>
+                </kanban>
+                <kanban position="attributes">
+                    <attribute name="default_group_by">project_stage</attribute>
+                </kanban>
+                <!-- <kanban position="attributes">
+                    <attribute name="on_create">quick_create</attribute>
+                </kanban> -->
+                <!-- <kanban position="attributes">
+                    <attribute name="quick_create_view">project.edit_project</attribute>
+                </kanban> -->
+                <xpath expr="//templates" position="before">
+                    <field name="max_rate"/>
+                    <field name="new_project_completed"/>
+                </xpath>
+                <kanban position="attributes">
+                    <attribute name="archivable">false</attribute>
+                </kanban>
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="project_stage" />
+                    <field name="new_project_completed"/>
+                </xpath>
+                <xpath expr="//kanban/templates/t/div" position="replace"  >
+                    <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                        <div class="o_project_kanban_main">
+                            <div class="o_dropdown_kanban dropdown" style="visibility: visible;" groups="base.group_user">
+                                <a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" role="button" aria-label="Dropdown menu" title="Dropdown menu" aria-expanded="true" data-display="static" href="#" >
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <t t-if="widget.editable">
+                                        <a class='dropdown-item' type="edit">Edit</a>
+                                    </t>
+                                    <t t-if="widget.deletable">
+                                        <a class='dropdown-item' type="delete">Delete</a>
+                                    </t>
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                            </div>
+                            <field name="id" invisible="1"/>
+                            <a style='color: #666666;' t-attf-href="/web?&amp;debug=#id={{ record.id.value }}&amp;view_type=form&amp;model=project.project&amp;action=380&amp;active_id={{ record.id.value }}&amp;menu_id=252">
+                            <div class="oe_kanban_content row">
+                                <div class='col-md-1'>
+                                    <span class="o_right"><field name="is_favorite" widget="boolean_favorite" nolabel="1" force_save="1"/></span>
+                                </div>
+                                <div class='col-md-9'>
+                                    <div class='row'>
+                                        <strong style="color: #212529;font-size: 16px;font-weight: 500;margin-bottom: 0;margin-top: 0;margin-left: 3px;"><field name="name"/></strong>
+                                    </div>
+                                    <div class='row' style='min-height: 19px;'>
+                                        <span><i><field name="partner_id"/></i></span>
+                                    </div>
+                                    <!-- <field name="new_project_completed" widget="progressbar"/> -->
+                                    <div class='row'>
+                                        <li style="list-style-type: none;width: 72%;margin-top: 10px;">
+                                            <div>Project Completed</div>
+                                            <field string="Project Complete" name="new_project_completed" widget="progressbar"
+                                                options="{'max_field': 'max_rate',  'style': 'width:160px; height: 100px;'}">
+                                            </field>
+                                        </li>
+                                    </div>
+                                </div>
+                                <div class="oe_clear"></div>
+                            </div>
+                            </a>
+                            <div class="o_project_kanban_boxes" style="padding-left: 11px;padding-top: 22px;width: 96%;font-weight: 500;display: flex;">
+                                <field name="id" invisible="1"/>
+                                <a style='width: 60%;' t-attf-href="/web?&amp;debug=#view_type=kanban&amp;model=project.task&amp;action=376&amp;active_id={{ record.id.value }}&amp;menu_id=252">
+                                    <span class="o_value"><t t-esc="record.task_count.value"/></span>
+                                    <span class="o_label"><t t-esc="record.label_tasks.value"/></span>
+                                </a>
+                                <a t-if="record.analytic_account_id.raw_value" class="o_project_kanban_box o_project_timesheet_box" name="action_view_account_analytic_line" type="object" groups="analytic.group_analytic_accounting">
+                                    <div>
+                                        <span class="o_label">Profitability</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>    
+        </record>
+        <record id="custom_edit_project_view" model="ir.ui.view">
+            <field name="name">Custom Edit Project</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <field name="project_stage" widget="statusbar" options="{'clickable': '1'}"/>
+                </xpath>
+                <xpath expr="//sheet/div[1]/button[@name='attachment_tree_view']" position="replace">
+
+                </xpath>
+                <xpath expr="//sheet/div[1]/button[1]" position="after">
+                    <button name="open_issue_register" type="object" class="oe_start_button" icon="fa-exclamation">
+                        <field name="issue_register_account" string="Issue Register" widget="statinfo"/>
+                    </button>
+                    <button name="open_project_risk" type="object" class="oe_start_button" icon="fa-exclamation-triangle">
+                        <field name="risk_project_account" string="Risk Register" widget="statinfo"/>
+                    </button>
+                    <button name="open_change_log" type="object" class="oe_start_button" icon="fa-refresh">
+                        <field name="change_log_account" string="Change Log" widget="statinfo"/>
+                    </button>
+                    <button  class="oe_stat_button" name="attachment_tree_view" type="object" icon="fa-file-text-o">
+                        <field string="Documents" name="doc_count" widget="statinfo"/>
+                    </button>
+                </xpath>
+                <xpath expr="//div[@class='oe_title']" position="before">
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name_seq" readonly="1"/>
+                        </h1>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('auto_create','=','yes')]}</attribute> 
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="auto_create" invisible="1" />
+                    <field name="assigned_resources"  widget='many2many_tags'/>
+                    <field name="account_manager" required="1" attrs="{'readonly':[('auto_create','=','yes')]}"/>
+                    <field name="parent_opportunity"  required="1" attrs="{'readonly':[('auto_create','=','yes')]}"/>
+                    <field name="project_folder" widget="url" required="1"/>
+                    <field string="Project Complete" name="new_project_completed" widget="percentpie"/>
+                    <field name="default_access_emails" invisible="1"/>
+                    <field name="stage_access_emails" invisible="1"/>
+                    <field name="owner_ownerManager_emails" invisible="1"/>
+                    <field name="assigned_resources_access_emails" invisible="1"/>
+                    <field name="change_log" invisible="1"/>
+                </xpath>
+                <xpath expr="//div[@name='options_active']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='privacy_visibility']" position="after">
+                    <field name="related_project" readonly="1" widget="many2many" >
+                        <tree>
+                            <field name="name"/>
+                            <field name="name_seq" string="Reference"/>
+                        </tree>
+                    </field>
+                    <field name="linked_project" widget="many2many">
+                        <tree>
+                            <field name="name"/>
+                            <field name="name_seq" string="Reference"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>   
+        <record id="custom_edit_project_view_modal" model="ir.ui.view">
+            <field name="name">Custom Edit Project Modal</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='alias_def']" position="after">
+                    <field name="company_id" invisible="1"/>
+                    <field name="auto_create" invisible="1" />
+                    <field name="parent_opportunity"  required="1" attrs="{'readonly':[('auto_create','=','yes')]}"/>
+                    <field name="partner_id" required="1" attrs="{'readonly':[('auto_create','=','yes')]}"/>
+                    <field name="account_manager" required="1" attrs="{'readonly':[('auto_create','=','yes')]}"/>
+                    <field name="project_folder" widget="url" required="1"/>
+                </xpath>
+            </field>
+        </record>         
+    </data>
+</odoo>    
+
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+

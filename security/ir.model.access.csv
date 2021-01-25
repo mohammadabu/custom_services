@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_services_services_stages,access.services.services.stages,model_services_services_stages,,1,1,1,1
+access_services_services_risk,access.services.services.risk,model_services_services_risk,,1,1,1,1
+access_services_services_issue_register,access.services.services.issue.register,model_services_services_issue_register,,1,1,1,1
+access_services_services_change_log,access.services.services.change.log,model_services_services_change_log,,1,1,1,1

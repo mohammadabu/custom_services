@@ -1,0 +1,4 @@
+<odoo>
+    <delete id="project.task_visibility_rule" model="ir.rule"/>
+    <delete id="project.project_public_members_rule" model="ir.rule"/>
+</odoo>

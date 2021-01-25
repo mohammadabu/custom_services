@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="services_change_log_action" model="ir.actions.act_window">
+            <field name="name">services change log</field>
+            <field name="res_model">services.services.change.log</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Define a new on change log
+              </p>
+            </field>
+        </record>
+        <record id='custom_services_change_log_action_form' model='ir.ui.view'>
+            <field name='name'>custom services change log action form</field>
+            <field name='model'>services.services.change.log</field>
+            <field name='arch' type='xml'>
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name='name'/>
+                                <field name='requestor'/>
+                                <field name='date'/>
+                                <field name='status'/>
+                                <field name="hide_report"/>
+                            </group>
+                            <group>
+                                <field name='description'/>
+                                <field name='date_acceptence_rejection'/>
+                                <field name='date_of_implementation'/>
+                                <field name='project_id' required="1" attrs="{'invisible':[('active_id', '!=', False),('active_id', '!=', 0)]}" />
+                                <field name="active_id" invisible="1" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>            
+            </field>
+        </record>
+        <record id='custom_services_change_log_action_tree' model='ir.ui.view'>
+            <field name='name'>custom services change log action tree</field>
+            <field name='model'>services.services.change.log</field>
+            <field name='arch' type='xml'>
+                <tree string="Issue Register" decoration-success="status=='Accepted'" decoration-danger="status=='Rejected'"  decoration-warning="status=='Under Analysis'">
+                    <field name='name' string="Change Id"/>
+                    <field name='requestor'/>
+                    <field name='date'/>
+                    <field name='status'/>
+                    <field name='description'/>
+                    <field name='date_acceptence_rejection'/>
+                    <field name='date_of_implementation'/>
+                    <field name='project_id'/>
+                </tree>             
+            </field>
+        </record>  
+        <menuitem
+                id="custom_menu_services_change_log"
+                action="services_change_log_action"
+                parent="services.menu_services_config"
+                sequence="13"
+                name="Change Log"
+        />
+    </data>
+</odoo>    
+
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<template id="internal_services_detail_qweb_report" name="internal_services_detail_qweb_report">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="e">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <form>
+                    <br/>
+                    <div class="container">
+                        <tr>
+                            <th>
+                                <t t-if="e.name">
+                                    <h2>
+                                        <b>
+                                            <span t-field="e.name"/>
+                                        </b>
+                                    </h2>
+                                </t>
+                            </th>
+                        </tr>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>Customer</th>
+                                    <th>Project Manager</th>
+                                    <th>Account Manager</th>
+                                    <th>Parent Opportunity</th>		
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <t t-if='e.name_seq'>
+                                            <span t-field="e.name_seq"/>
+                                        </t>
+                                        <t t-if="not e.name_seq">-</t>
+                                    </td>
+                                    <td>
+                                        <t t-if='e.partner_id'>
+                                            <span t-field="e.partner_id"/>
+                                        </t>
+                                        <t t-if="not e.partner_id">-
+                                            </t>
+                                    </td>
+                                    <td>
+                                        <t t-if='e.user_id'>
+                                            <span t-field="e.user_id"/>
+                                        </t>
+                                        <t t-if="not e.user_id">-</t>
+                                    </td>
+                                    <td>
+                                        <t t-if='e.account_manager'>
+                                            <span t-field="e.account_manager"/>
+                                        </t>
+                                        <t t-if="not e.account_manager">-</t>
+                                    </td>
+                                    <td>
+                                        <t t-if='e.parent_opportunity'>
+                                            <span t-field="e.parent_opportunity"/>
+                                        </t>
+                                        <t t-if="not e.parent_opportunity">-</t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <t t-if="e.tasks">
+                            <br/>
+                            <div>
+                                <tr>
+                                    <th>
+                                        <h2>
+                                            <b>Tasks:</b>
+                                        </h2>
+                                    </th>
+                                </tr>
+                            </div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Task Name</th>
+                                        <th>Planned Hours</th>
+                                        <th>Spent Hours</th>
+                                        <th>Remaining Hours</th>
+                                        <th>Assigned To</th>
+                                        <th>Assigning Date</th>
+                                        <th>Deadline</th>
+                                        <th>Stage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="e.tasks" t-as="t">
+                                        <tr>
+                                            <td>
+                                                <t t-if='t.name'>
+                                                    <span t-field="t.name"/>
+                                                </t>
+                                                <t t-if="not t.name">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='t.planned_hours'>
+                                                    <t t-esc="'%02d:%02d' % (int(t.planned_hours), t.planned_hours % 1 * 60)"/></t>
+                                                <t t-if="not t.planned_hours">00:00</t>
+                                            </td>
+                                            <!-- <td>
+                                                <t t-if='t.effective_hours'>
+                                                    <t t-esc="'%02d:%02d' % (int(t.effective_hours), t.effective_hours % 1 * 60)"/></t>
+                                                <t t-if="not t.effective_hours">00:00</t>
+                                            </td> -->
+                                            <!-- <td>
+                                                <t t-if='t.remaining_hours'>
+                                                    <t t-esc="'%02d:%02d' % (int(t.remaining_hours), t.remaining_hours % 1 * 60)"/></t>
+                                                <t t-if="not t.remaining_hours">00:00</t>
+                                            </td> -->
+                                            <td>
+                                                <t t-if='t.user_id'>
+                                                    <span t-field="t.user_id"/>
+                                                </t>
+                                                <t t-if="not t.user_id">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='t.date_assign'>
+                                                    <span t-field="t.date_assign"/>
+                                                </t>
+                                                <t t-if="not t.date_assign">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='t.date_deadline'>
+                                                    <span t-field="t.date_deadline"/>
+                                                </t>
+                                                <t t-if="not t.date_deadline">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='t.stage_id'>
+                                                    <span t-field="t.stage_id"/>
+                                                </t>
+                                                <t t-if="not t.stage_id">-</t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-if="e.issue_register">
+                            <br/>
+                            <div>
+                                <tr>
+                                    <th>
+                                        <h2>
+                                            <b>Issue Register:</b>
+                                        </h2>
+                                    </th>
+                                </tr>
+                            </div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>issue ID</th>
+                                        <th>name</th>
+                                        <th>owner</th>
+                                        <th>due_date</th>
+                                        <th>status</th>
+                                        <th>resolution</th>
+                                        <th>date_of_resolution</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="e.issue_register" t-as="ir">
+                                        <t t-if='ir.hide_report != True'>
+                                        <tr>
+                                            <td>
+                                                <t t-if='ir.issueID'>
+                                                    <span t-field="ir.issueID"/>
+                                                </t>
+                                                <t t-if="not ir.issueID">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ir.name'>
+                                                    <span t-field="ir.name"/>
+                                                </t>
+                                                <t t-if="not ir.name">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ir.owner'>
+                                                    <span t-field="ir.owner"/>
+                                                </t>
+                                                <t t-if="not ir.owner">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ir.due_date'>
+                                                    <span t-field="ir.due_date"/>
+                                                </t>
+                                                <t t-if="not ir.due_date">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ir.status'>
+                                                    <span t-field="ir.status"/>
+                                                </t>
+                                                <t t-if="not ir.status">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ir.resolution'>
+                                                    <span t-field="ir.resolution"/>
+                                                </t>
+                                                <t t-if="not ir.resolution">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ir.date_of_resolution'>
+                                                    <span t-field="ir.date_of_resolution"/>
+                                                </t>
+                                                <t t-if="not ir.date_of_resolution">-</t>
+                                            </td>
+                                        </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-if="e.risk_register">
+                            <br/>
+                            <div>
+                                <tr>
+                                    <th>
+                                        <h2>
+                                            <b>Risk Register:</b>
+                                        </h2>
+                                    </th>
+                                </tr>
+                            </div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Risk ID</th>
+                                        <th>name</th>
+                                        <th>owner</th>
+                                        <th>due_date</th>
+                                        <th>status</th>
+                                        <th>resolution</th>
+                                        <th>date_of_resolution</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="e.risk_register" t-as="rr">
+                                        <t t-if='rr.hide_report != True'>
+                                        <tr>
+                                            <td>
+                                                <t t-if='rr.issueID'>
+                                                    <span t-field="rr.issueID"/>
+                                                </t>
+                                                <t t-if="not rr.issueID">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='rr.name'>
+                                                    <span t-field="rr.name"/>
+                                                </t>
+                                                <t t-if="not rr.name">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='rr.owner'>
+                                                    <span t-field="rr.owner"/>
+                                                </t>
+                                                <t t-if="not rr.owner">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='rr.due_date'>
+                                                    <span t-field="rr.due_date"/>
+                                                </t>
+                                                <t t-if="not rr.due_date">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='rr.status'>
+                                                    <span t-field="rr.status"/>
+                                                </t>
+                                                <t t-if="not rr.status">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='rr.resolution'>
+                                                    <span t-field="rr.resolution"/>
+                                                </t>
+                                                <t t-if="not rr.resolution">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='rr.date_of_resolution'>
+                                                    <span t-field="rr.date_of_resolution"/>
+                                                </t>
+                                                <t t-if="not rr.date_of_resolution">-</t>
+                                            </td>
+                                        </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-if="e.change_log">
+                            <br/>
+                            <div>
+                                <tr>
+                                    <th>
+                                        <h2>
+                                            <b>Change Log:</b>
+                                        </h2>
+                                    </th>
+                                </tr>
+                            </div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Change ID</th>
+                                        <th>requestor</th>
+                                        <th>status</th>
+                                        <th>date</th>
+                                        <th>description</th>
+                                        <th>date acceptence rejection</th>
+                                        <th>date of implementation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="e.change_log" t-as="ch">
+                                        <t t-if='ch.hide_report != True'>
+                                        <tr>
+                                            <td>
+                                                <t t-if='ch.name'>
+                                                    <span t-field="ch.name"/>
+                                                </t>
+                                                <t t-if="not ch.name">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ch.requestor'>
+                                                    <span t-field="ch.requestor"/>
+                                                </t>
+                                                <t t-if="not ch.requestor">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ch.status'>
+                                                    <span t-field="ch.status"/>
+                                                </t>
+                                                <t t-if="not ch.status">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ch.date'>
+                                                    <span t-field="ch.date"/>
+                                                </t>
+                                                <t t-if="not ch.date">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ch.description'>
+                                                    <span t-field="ch.description"/>
+                                                </t>
+                                                <t t-if="not ch.description">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ch.date_acceptence_rejection'>
+                                                    <span t-field="ch.date_acceptence_rejection"/>
+                                                </t>
+                                                <t t-if="not ch.date_acceptence_rejection">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-if='ch.date_of_implementation'>
+                                                    <span t-field="ch.date_of_implementation"/>
+                                                </t>
+                                                <t t-if="not ch.date_of_implementation">-</t>
+                                            </td>
+                                        </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                    </div>
+                </form>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>

@@ -1,0 +1,37 @@
+<odoo>
+    <data noupdate="1">
+        <record id="custom_services_stage_account_manager_review" model="services.services.stages">
+            <field name="name">Account Manager Review</field>
+            <field name="internal_id">Account Manager Review</field>
+        </record>
+        <record id="custom_services_stage_pmo_review" model="services.services.stages">
+            <field name="name">Operations Manager Review</field>
+            <field name="internal_id">Operations Manager Review</field>
+            <field name="default_stage">True</field>
+        </record>
+        <record id="custom_services_stage_internal_kickoff_meeting" model="services.services.stages">
+            <field name="name">Internal Kickoff Meeting</field>
+            <field name="internal_id">Internal Kickoff Meeting</field>
+        </record>
+        <record id="custom_services_stage_resources_assignment" model="services.services.stages">
+            <field name="name">External Kickoff Meeting</field>
+            <field name="internal_id">External Kickoff Meeting</field>
+        </record>
+        <record id="custom_services_stage_External_kickoff_meeting" model="services.services.stages">
+            <field name="name">Onboarding</field>
+            <field name="internal_id">Onboarding</field>
+        </record>
+        <record id="custom_services_stage_designing" model="services.services.stages">
+            <field name="name">Operations</field>
+            <field name="internal_id">Operations</field>
+        </record>
+        <record id="custom_services_stage_execution" model="services.services.stages">
+            <field name="name">Renewal</field>
+            <field name="internal_id">Renewal</field>
+        </record>
+        <record id="custom_services_stage_onhold" model="services.services.stages">
+            <field name="name">Closed</field>
+            <field name="internal_id">Closed</field>
+        </record>
+    </data>    
+</odoo>

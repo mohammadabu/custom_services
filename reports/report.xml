@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <report id="internal_report_services_detail"
+            model="services.services"
+            report_type="qweb-pdf"
+            name="custom_services.internal_services_detail_qweb_report"
+            file="custom_services.internal_services_detail_qweb_report"
+            string="Internal services Details"/>
+
+</odoo>
